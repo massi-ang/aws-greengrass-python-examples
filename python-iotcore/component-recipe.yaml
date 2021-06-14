@@ -1,0 +1,33 @@
+---
+RecipeFormatVersion: 2020-01-25
+ComponentName: ${NAME}
+ComponentVersion: ${VERSION}
+ComponentDescription: ${DESCRIPTION}
+ComponentPublisher: ${PUBLISHER}
+ComponentDependencies: {}
+ComponentConfiguration:
+  DefaultConfiguration:
+    accessControl:
+      aws.greengrass.ipc.mqttproxy: 
+        policy_1:
+          policyDescription: My policy
+          operations:
+            - "*"
+          resources:
+            - "*"
+    CloudTopics: 
+      - test/send
+      - test/receive
+Manifests:
+  - Platform:
+      os: /linux|darwin/
+    Lifecycle:
+      Install: |-
+        pip install awsiotsdk -t .
+      Run: 
+        Script: |-
+          PYTHONPATH={artifacts:path}/$PYTHONPATH python3 -u {artifacts:path}/pubsub.py
+    Artifacts:
+      - Uri: s3://${BUCKET}/${NAME}/${VERSION}/pubsub.py
+      - Uri: s3://${BUCKET}/${NAME}/${VERSION}/greengrass_ipc.py        
+  
