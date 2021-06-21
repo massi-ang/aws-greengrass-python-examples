@@ -12,19 +12,24 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-from . import greengrass_ipc as gg
+import greengrassipcsdk as gg
 import os
 import time
 
-TIMEOUT = 10
-                    
+client = gg.IPCIotCore()
+
 topic = os.environ.get("TOPIC", "test/docker_comp")
 message = os.environ.get("MESSAGE", "Hello, World")
 qos = gg.QOS.AT_LEAST_ONCE
 
+def message_handler(topic:str, data: bytes):
+    print(f"Got {data} on {topic}")
+
+client.subscribe(topic+'/resp', gg.QOS.AT_LEAST_ONCE, message_handler)
+
 while True: 
     try:
-        gg.publish(topic='iotdata/'+topic, qos=0, payload=bytes(message))
+        client.publish(topic=topic, qos=0, payload=bytes(message))
     except Exception as ex:
         print(ex)
     time.sleep(5)
