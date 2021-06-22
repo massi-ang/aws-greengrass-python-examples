@@ -28,7 +28,7 @@ Manifests:
         pip3 install --upgrade pip
         python3 -m pip install --upgrade setuptools
         pip3 install wheel
-        pip3 install --no-cache-dir {artifacts:path}/greengrassipcsdk-1.0.1.tar.gz
+        pip3 install {artifacts:path}/greegnrassipcsdk-1.0.1.tar.gz
       Run: 
         Script: |-
           . venv/bin/activate
