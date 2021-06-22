@@ -1,9 +1,9 @@
 ---
 RecipeFormatVersion: 2020-01-25
-ComponentName: ${NAME}
-ComponentVersion: ${VERSION}
-ComponentDescription: ${DESCRIPTION}
-ComponentPublisher: ${PUBLISHER}
+ComponentName: _NAME_
+ComponentVersion: _VERSION_
+ComponentDescription: _DESCRIPTION_
+ComponentPublisher: _PUBLISHER_
 ComponentDependencies: {}
 ComponentConfiguration:
   DefaultConfiguration:
@@ -23,11 +23,17 @@ Manifests:
       os: /linux|darwin/
     Lifecycle:
       Install: |-
-        pip install awsiotsdk -t .
+        python3 -m venv venv
+        . venv/bin/activate
+        pip3 install --upgrade pip
+        python3 -m pip install --upgrade setuptools
+        pip3 install wheel
+        pip3 install --no-cache-dir {artifacts:path}/greengrassipcsdk-1.0.1.tar.gz
       Run: 
         Script: |-
-          PYTHONPATH={artifacts:path}/$PYTHONPATH python3 -u {artifacts:path}/pubsub.py
+          . venv/bin/activate
+          python3 -u {artifacts:path}/pubsub.py
     Artifacts:
-      - Uri: s3://${BUCKET}/${NAME}/${VERSION}/pubsub.py
-      - Uri: s3://${BUCKET}/${NAME}/${VERSION}/greengrass_ipc.py        
+      - Uri: s3://_BUCKET_/_NAME_/_VERSION_/pubsub.py
+      - Uri: s3://_BUCKET_/_NAME_/_VERSION_/greengrassipcsdk-1.0.1.tar.gz        
   
