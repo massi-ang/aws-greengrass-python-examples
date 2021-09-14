@@ -18,7 +18,7 @@ import time
 
 client = gg.IPCIotCore()
 
-topic = os.environ.get("TOPIC", "test/docker_comp")
+topic = os.environ.get("TOPIC", "test/helloworld")
 message = os.environ.get("MESSAGE", "Hello, World")
 qos = gg.QOS.AT_LEAST_ONCE
 
@@ -29,7 +29,7 @@ client.subscribe(topic+'/resp', gg.QOS.AT_LEAST_ONCE, message_handler)
 
 while True: 
     try:
-        client.publish(topic=topic, qos=0, payload=bytes(message))
+        client.publish(topic=topic, qos=0, message=bytes(message, "utf-8"))
     except Exception as ex:
         print(ex)
     time.sleep(5)

@@ -1,9 +1,9 @@
 ---
 RecipeFormatVersion: 2020-01-25
-ComponentName: _NAME_
-ComponentVersion: _VERSION_
-ComponentDescription: _DESCRIPTION_
-ComponentPublisher: _PUBLISHER_
+ComponentName: com.example.iotcore
+ComponentVersion: 1.0.0
+ComponentDescription: My first component
+ComponentPublisher: me
 ComponentDependencies: {}
 ComponentConfiguration:
   DefaultConfiguration:
@@ -15,9 +15,7 @@ ComponentConfiguration:
             - "*"
           resources:
             - "*"
-    CloudTopics: 
-      - test/send
-      - test/receive
+    CloudTopic: test/send
 Manifests:
   - Platform:
       os: /linux|darwin/
@@ -28,12 +26,14 @@ Manifests:
         pip3 install --upgrade pip
         python3 -m pip install --upgrade setuptools
         pip3 install wheel
-        pip3 install {artifacts:path}/greegnrassipcsdk-1.0.1.tar.gz
+        pip3 install {artifacts:path}/greengrassipcsdk-1.0.1.tar.gz
       Run: 
+        Setenv: 
+          TOPIC: "{configuration:/CloudTopic}"
         Script: |-
           . venv/bin/activate
           python3 -u {artifacts:path}/pubsub.py
     Artifacts:
-      - Uri: s3://_BUCKET_/_NAME_/_VERSION_/pubsub.py
-      - Uri: s3://_BUCKET_/_NAME_/_VERSION_/greengrassipcsdk-1.0.1.tar.gz        
+      - Uri: s3://_BUCKET_/com.example.iotcore/1.0.0/pubsub.py
+      - Uri: s3://_BUCKET_/com.example.iotcore/1.0.0/greengrassipcsdk-1.0.1.tar.gz        
   
